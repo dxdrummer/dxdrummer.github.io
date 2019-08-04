@@ -28,6 +28,12 @@
         stroke: steelblue;
 
     }
+    
+    path {
+        stroke: steelblue;
+        stroke-width: 2;
+        fill: none;
+    }
 
 </style>
     
@@ -48,9 +54,9 @@
         width = window.innerWidth - margin.left - margin.right,
         height = window.innerHeight - margin.top - margin.bottom;
         
-        var parseTime = d3.timeParse("%y");
+        var parseTime = d3.timeParse("%Y");
 
-        var data = d3.csv('/data/salesByGenre.csv');
+
 
 
         var svg = d3.select("svg")
@@ -62,42 +68,53 @@
         var x = d3.scaleTime().range([0, width]);
         var y = d3.scaleLinear().range([height, 0]);
             
-        x.domain(d3.extent(data, function(d) { return d.Year_of_Release;}));
-        y.domain([0, d3.max(data, function(d){return Math.max(d.Global_Sales);})]);
+        var xAxis = d3.axisBottom(x).ticks(40);
+    
+        var yAxis = d3.axisLeft(y).ticks(20);
     
     
-    
-
-        var output = function(d, name){
-            return d.Genre == name;
-            
-        }
-        
-
-    
-        var genreLine1 = d3.line()
+        var genreLine = d3.line()
             .x(function(d){return xScale(data.Year_of_Release);})
             .y(function(d){return yScale(data.Global_Sales);});
     
     
-        d3.select("svg")
-            .append("path")
-                .data(data)
-            .attr("class", "line")
-            .style("stroke", "red")
-            .attr("d", genreLine1);
-    
-    
-    
-        d3.select("svg")
+        var svg = d3.select("svg")
+            .html("")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
             .append("g")
-          .attr("transform", "translate(0," + height + ")")
-          .call(d3.axisBottom(x));
+                .attr("transform", "translate(" + margin.left + "," + margin.top +")");
+    
+        d3.csv('/data/salesByGenre.csv', function(error, data){
+            data.forEach(function(d){
+                d.Global_Sales = +d.Global_Sales;
+                d.Year_of_Release = parseData(d.Year_of_Release);
+            });
+            
+            x.domain(d3.extent(data, function(d){return d.Year_of_Release;}));
+            y.domain([0, d3.max(data, function(d){return d.Global_Sales;})]);
+            
+            var dataNest = d3.nest()
+                .key(function(d) {return d.Genre})
+                .entries(data)
+            
+            dataNest.forEach(function(d){
+                svg.append("path")
+                    .attr("class", "line")
+                    .attr("d", genreLine(d.values));
+            });
+            
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
 
-        svg.append("g")
-            .call(d3.axisLeft(y));
+            svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis);
 
 
+        });
     </script>
 
 </body>
