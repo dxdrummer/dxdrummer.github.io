@@ -69,7 +69,7 @@
     
 
         
-        var dataAction = data.filter(function (d){return d.Genre == "Action";});
+        var dataAction = data(data.filter(function (d){return d.Genre == "Action";}));
         var dataAdventure = data(data.filter(function (d){return d.Genre == "Adventure";}));
         var dataFighting = data(data.filter(function (d){return d.Genre == "Fighting";}));
         var dataMisc = data(data.filter(function (d){return d.Genre == "Misc";}));
