@@ -73,151 +73,21 @@
             
         }
         
-        var dataAction = output(data, "Action");
-        var dataAdventure = output(data, "Adventure");
-        var dataMisc = output(data, "Misc");
-        var dataPlatform = output(data, "Platform");
-        var dataPuzzle = output(data, "Puzzle");
-        var dataRacing = output(data, "Racing")
-        var dataRolePlaying = output(data, "Role-Playing");
-        var dataShooter = output(data, "Shooter");
-        var dataSimulation = output(data, "Simulation");
-        var dataSports = output(data, "Sports");
-        var dataStrategy = output(data, "Strategy");
-    
-        var genreLine1 = d3.line()
-            .x(function(d){return xScale(dataAction.Year_of_Release);})
-            .y(function(d){return yScale(dataAction.Global_Sales);});
 
     
-        var genreLine2 = d3.line()
-            .x(function(d){return xScale(dataAdventure.Year_of_Release);})
-            .y(function(d){return yScale(dataAdventure.Global_Sales);});
-    
-        var genreLine3 = d3.line()
-            .x(function(d){return xScale(dataFighting.Year_of_Release);})
-            .y(function(d){return yScale(dataFighting.Global_Sales);});
-    
-        var genreLine4 = d3.line()
-            .x(function(d){return xScale(dataMisc.Year_of_Release);})
-            .y(function(d){return yScale(dataMisc.Global_Sales);});  
-    
-        var genreLine5 = d3.line()
-            .x(function(d){return xScale(dataPlatform.Year_of_Release);})
-            .y(function(d){return yScale(dataPlatform.Global_Sales);}); 
-    
-        var genreLine6 = d3.line()
-            .x(function(d){return xScale(dataPuzzle.Year_of_Release);})
-            .y(function(d){return yScale(dataPuzzle.Global_Sales);});
-    
-        var genreLine7 = d3.line()
-            .x(function(d){return xScale(dataRacing.Year_of_Release);})
-            .y(function(d){return yScale(dataRacing.Global_Sales);});
-    
-        var genreLine8 = d3.line()
-            .x(function(d){return xScale(dataRolePlaying.Year_of_Release);})
-            .y(function(d){return yScale(dataRolePlaying.Global_Sales);});
-    
-        var genreLine9 = d3.line()
-            .x(function(d){return xScale(dataShooter.Year_of_Release);})
-            .y(function(d){return yScale(dataShooter.Global_Sales);});
-    
-        var genreLine10 = d3.line()
-            .x(function(d){return xScale(dataSimulation.Year_of_Release);})
-            .y(function(d){return yScale(dataSimulation.Global_Sales);});
-    
-        var genreLine11 = d3.line()
-            .x(function(d){return xScale(dataSports.Year_of_Release);})
-            .y(function(d){return yScale(dataSports.Global_Sales);});
-    
-        var genreLine12 = d3.line()
-            .x(function(d){return xScale(dataStrategy.Year_of_Release);})
-            .y(function(d){return yScale(dataStrategy.Global_Sales);});
+        var genreLine1 = d3.line()
+            .x(function(d){return xScale(data.Year_of_Release);})
+            .y(function(d){return yScale(data.Global_Sales);});
     
     
         d3.select("svg")
             .append("path")
-                .data(dataAction)
+                .data(data)
             .attr("class", "line")
             .style("stroke", "red")
             .attr("d", genreLine1);
     
-        d3.select("svg")
-            .append("path")
-                .data(dataAdventure)
-            .attr("class", "line")
-            .style("stroke", "red")
-            .attr("d", genreLine2);
     
-        d3.select("svg")
-            .append("path")
-                .data(dataFighting)
-            .attr("class", "line")
-            .style("stroke", "red")
-            .attr("d", genreLine3);
-    
-        d3.select("svg")
-            .append("path")
-                .data(dataMisc)
-            .attr("class", "line")
-            .style("stroke", "red")
-            .attr("d", genreLine4);
-    
-        d3.select("svg")
-            .append("path")
-                .data(dataPlatform)
-            .attr("class", "line")
-            .style("stroke", "red")
-            .attr("d", genreLine5);
-    
-        d3.select("svg")
-            .append("path")
-                .data(dataPuzzle)
-            .attr("class", "line")
-            .style("stroke", "red")
-            .attr("d", genreLine6);
-    
-        d3.select("svg")
-            .append("path")
-                .data(dataRacing)
-            .attr("class", "line")
-            .style("stroke", "red")
-            .attr("d", genreLine7);
-
-        d3.select("svg")
-            .append("path")
-                .data(dataRolePlaying)
-            .attr("class", "line")
-            .style("stroke", "red")
-            .attr("d", genreLine8);
-    
-        d3.select("svg")
-            .append("path")
-                .data(dataShooter)
-            .attr("class", "line")
-            .style("stroke", "red")
-            .attr("d", genreLine9);
-    
-        d3.select("svg")
-            .append("path")
-                .data(dataSimulation)
-            .attr("class", "line")
-            .style("stroke", "red")
-            .attr("d", genreLine10);
-    
-        d3.select("svg")
-            .append("path")
-                .data(dataSports)
-            .attr("class", "line")
-            .style("stroke", "red")
-            .attr("d", genreLine11);
-    
-        d3.select("svg")
-            .append("path")
-                .data(dataStrategy)
-            .attr("class", "line")
-            .style("stroke", "red")
-            .attr("d", genreLine12);
     
         d3.select("svg")
             .append("g")
