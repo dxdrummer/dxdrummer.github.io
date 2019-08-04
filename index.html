@@ -71,10 +71,7 @@
                 .attr("class", "y axis")
                 .call(d3.axisLeft(yScale));
         
-        svg.append("path")
-            .datum(data1)
-            .attr("class", "line")
-            .attr("d", line);
+
         
         svg.selectAll(".dot")
             .data(data1)
