@@ -41,21 +41,13 @@
         height = window.innerHeight - margin.top - margin.bottom;
         
 
-        var data1 = '/data/salesByGenre.csv';
+        var data1 = 'data/salesByGenre.csv';
                 
-        var xScale = d3.scaleLinear().domain([1985, d3.max(data1, function(d){return d['Year_of_Release'] + 10;})]).range([0, width]);   
+        var xScale = d3.scaleLinear().domain([1985, 2019]).range([0, width]);   
         
-        var yScale = d3.scaleLinear().domain([0,d3.max(data1, function(d){return d['Global_Sales'] + 10;})]).range([height,0]);
+        var yScale = d3.scaleLinear().domain([0, 200]).range([height,0]);
         
-        var lineGenerator = d3.line()
-            .x(function(d,i) {
-                return xScale(i);
-            })
-            .y(function(d) {
-                return yScale(d['Global_Sales']);
-            });
 
-        var line = lineGenerator(data1);
 
         var svg = d3.select("svg")
             .attr("width", width + margin.left + margin.right)
@@ -84,13 +76,23 @@
             .attr("class", "line")
             .attr("d", line);
         
-        svg.selectAll(".dot")
+        d3.select("g").selectAll(".dot")
             .data(data1)
             .enter().append("circle")
                 .attr("class", "dot")
-                .attr("cx", function(d,i){return xScale(d['Global_Sales'])})
-                .attr("cy", function(d){return yScale(d['Year_of_Release'])})
+                .attr("cx", function(d){return xScale(d.Year_of_Release)})
+                .attr("cy", function(d){return yScale(d.Global_Sales)})
                 .attr("r", 5);
+        
+        var lineGenerator = d3.line()
+            .x(function(d,i) {
+                return xScale(i);
+            })
+            .y(function(d) {
+                return yScale(d['Global_Sales']);
+            });
+
+        var line = lineGenerator(data1);
 
     </script>
 
