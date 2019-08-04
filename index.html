@@ -54,7 +54,7 @@ width = window.innerWidth - margin.left - margin.right,
 height = window.innerHeight - margin.top - margin.bottom;
 
     
-var data = d3.csv('/data/salesByGenre.csv', function(d){
+d3.csv('/data/salesByGenre.csv', function(d){
     return {year: d.Year_of_Release, Genre: d.Genre, sales: d.Global_Sales};
 });
     
