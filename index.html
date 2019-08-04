@@ -58,7 +58,6 @@ d3.csv('/data/salesByGenre.csv', function(d){
     return {year: d.Year_of_Release, Genre: d.Genre, sales: d.Global_Sales};
 });
     
-    console.log(data)
     
 
 var xScale = d3.scaleLinear().domain([1980,2020]).range([0,width])
