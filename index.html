@@ -53,9 +53,18 @@ var margin = {top: 50, right: 50, bottom: 50, left: 50},
 width = window.innerWidth - margin.left - margin.right,
 height = window.innerHeight - margin.top - margin.bottom;
 
+function getFilteredData(data){
+    return data.filter(function(d){return {'Year': d.Year_of_Release, 'Global_Sales': d.Global_Sales, 'Genre': d.Genre };});
+}
     
-d3.csv('/data/salesByGenre.csv', function(d){
-    return {year: d.Year_of_Release, Genre: d.Genre, sales: d.Global_Sales};
+var data = d3.csv('/data/salesByGenre.csv', function(data){
+        return {
+            Genre: d.Genre,
+            Year: +d.YearofRelease,
+            Sales: +d.Gross_Sales
+        };
+}).then(function(data){
+    console.log(data[0]);
 });
     
     
@@ -78,8 +87,8 @@ var yScale = d3.scaleLinear().domain([0,200]).range([height,0]);
                 .attr("height", 0)
                 .attr("y",400)
                 .transition().duration(3000).delay(1000)
-                .attr("height",function(d,i){return height-yScale(d.sales)})
-                .attr("x", function(d,i){return xScale(d.year)});
+                .attr("height",function(d,i){return height-yScale(d.Sales)})
+                .attr("x", function(d,i){return xScale(d.Year)});
         
     }
     
