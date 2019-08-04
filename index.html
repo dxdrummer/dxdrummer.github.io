@@ -86,7 +86,6 @@
                 .attr("transform", "translate(" + margin.left + "," + margin.top +")");
     
         d3.csv('/data/salesByGenre.csv', function(error, data){
-            data.forEach(function(d){
 
             
             x.domain(d3.extent(data, function(d){return d.Year_of_Release;}));
