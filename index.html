@@ -43,14 +43,19 @@
 
         var data1 = '/data/salesByGenre.csv';
                 
-        var xScale = d3.scaleLinear().domain([1985, d3.max(data1, function(d){return d.Year_of_Release + 10;})]).range([0, width]);   
+        var xScale = d3.scaleLinear().domain([1985, d3.max(data1, function(d){return d['Year_of_Release'] + 10;})]).range([0, width]);   
         
-        var yScale = d3.scaleLinear().domain([0,d3.max(data1, function(d){return d.Global_Sales + 10;})]).range([height,0]);
+        var yScale = d3.scaleLinear().domain([0,d3.max(data1, function(d){return d['Global_Sales'] + 10;})]).range([height,0]);
         
-        var line = d3.line()
-            .x(function(d){return xScale(d.Year_of_Release);})
-            .y(function(d){return yScale(d.Global_Sales);});
+        var lineGenerator = d3.line()
+            .x(function(d,i) {
+                return xScale(i);
+            })
+            .y(function(d) {
+                return yScale(d['Global_Sales']);
+            });
 
+        var line = lineGenerator(data1);
 
         var svg = d3.select("svg")
             .attr("width", width + margin.left + margin.right)
@@ -71,7 +76,10 @@
                 .attr("class", "y axis")
                 .call(d3.axisLeft(yScale));
         
-        svg.append("path")
+
+        
+        d3.select("svg")
+            .append("path")
             .datum(data1)
             .attr("class", "line")
             .attr("d", line);
@@ -80,8 +88,8 @@
             .data(data1)
             .enter().append("circle")
                 .attr("class", "dot")
-                .attr("cx", function(d,i){return xScale(d.Global_Sales)})
-                .attr("cy", function(d){return yScale(d.Year_of_Release)})
+                .attr("cx", function(d,i){return xScale(d['Global_Sales'])})
+                .attr("cy", function(d){return yScale(d['Year_of_Release'])})
                 .attr("r", 5);
 
     </script>
