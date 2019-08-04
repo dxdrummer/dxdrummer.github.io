@@ -50,10 +50,7 @@
         
         var parseTime = d3.timeParse("%y");
 
-        var data = d3.csv('/data/salesByGenre.csv'), function(error, data){
-            if (error) throw error;
-
-        };
+        var data = d3.csv('/data/salesByGenre.csv');
 
 
         var svg = d3.select("svg")
