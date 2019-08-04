@@ -69,18 +69,18 @@
     
 
         
-        var dataAction = function (d){return d.Genre == "Action";};
-        var dataAdventure = function (d){return d.Genre == "Adventure";};
-        var dataFighting = function (d){return d.Genre == "Fighting";};
-        var dataMisc = function (d){return d.Genre == "Misc";};
-        var dataPlatform = function (d){return d.Genre == "Platform";};
-        var dataPuzzle = function (d){return d.Genre == "Puzzle";};
-        var dataRacing = function (d){return d.Genre == "Racing";};
-        var dataRolePlaying = function (d){return d.Genre == "Role-Playing";};
-        var dataShooter = function (d){return d.Genre == "Shooter";};
-        var dataSimulation = function (d){return d.Genre == "Simulation";};
-        var dataSports = function (d){return d.Genre == "Sports";};
-        var dataStrategy =function (d){return d.Genre == "Strategy";};
+        var dataAction = function (d){return data.Genre == "Action";};
+        var dataAdventure = function (d){return data.Genre == "Adventure";};
+        var dataFighting = function (d){return data.Genre == "Fighting";};
+        var dataMisc = function (d){return data.Genre == "Misc";};
+        var dataPlatform = function (d){return data.Genre == "Platform";};
+        var dataPuzzle = function (d){return data.Genre == "Puzzle";};
+        var dataRacing = function (d){return data.Genre == "Racing";};
+        var dataRolePlaying = function (d){return data.Genre == "Role-Playing";};
+        var dataShooter = function (d){return data.Genre == "Shooter";};
+        var dataSimulation = function (d){return data.Genre == "Simulation";};
+        var dataSports = function (d){return data.Genre == "Sports";};
+        var dataStrategy =function (d){return data.Genre == "Strategy";};
     
         var genreLine1 = d3.line()
             .x(function(d){return xScale(dataAction.Year_of_Release);})
