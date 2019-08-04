@@ -54,7 +54,9 @@ width = window.innerWidth - margin.left - margin.right,
 height = window.innerHeight - margin.top - margin.bottom;
 
     
-var data = d3.csv('/data/salesByGenre.csv');
+var data = d3.csv('/data/salesByGenre.csv', function(d){
+    return {year: d.Year_of_Release, Genre: d.Genre, sales: d.Global_Sales};
+});
     
     console.log(data)
     
@@ -77,8 +79,8 @@ var yScale = d3.scaleLinear().domain([0,200]).range([height,0]);
                 .attr("height", 0)
                 .attr("y",400)
                 .transition().duration(3000).delay(1000)
-                .attr("height",function(d,i){return height-yScale(d.Global_Sales)})
-                .attr("x", function(d,i){return xScale(d.Year_of_Release)});
+                .attr("height",function(d,i){return height-yScale(d.sales)})
+                .attr("x", function(d,i){return xScale(d.year)});
         
     }
     
