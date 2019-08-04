@@ -1,2 +1,2 @@
-# cs498.github.io
+# dxdrummer.github.io
 cs498 final projects\
