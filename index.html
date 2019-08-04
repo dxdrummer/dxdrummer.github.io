@@ -87,9 +87,7 @@
     
         d3.csv('/data/salesByGenre.csv', function(error, data){
             data.forEach(function(d){
-                d.Global_Sales = +d.Global_Sales;
-                d.Year_of_Release = parseData(d.Year_of_Release);
-            });
+
             
             x.domain(d3.extent(data, function(d){return d.Year_of_Release;}));
             y.domain([0, d3.max(data, function(d){return d.Global_Sales;})]);
