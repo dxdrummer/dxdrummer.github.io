@@ -69,18 +69,18 @@
     
 
         
-        var dataAction = data(data.filter(function (d){return d.Genre == "Action";}));
-        var dataAdventure = data(data.filter(function (d){return d.Genre == "Adventure";}));
-        var dataFighting = data(data.filter(function (d){return d.Genre == "Fighting";}));
-        var dataMisc = data(data.filter(function (d){return d.Genre == "Misc";}));
-        var dataPlatform = data(data.filter(function (d){return d.Genre == "Platform";}));
-        var dataPuzzle = data(data.filter(function (d){return d.Genre == "Puzzle";}));
-        var dataRacing = data(data.filter(function (d){return d.Genre == "Racing";}));
-        var dataRolePlaying = data(data.filter(function (d){return d.Genre == "Role-Playing";}));
-        var dataShooter = data(data.filter(function (d){return d.Genre == "Shooter";}));
-        var dataSimulation = data(data.filter(function (d){return d.Genre == "Simulation";}));
-        var dataSports = data(data.filter(function (d){return d.Genre == "Sports";}));
-        var dataStrategy = data(data.filter(function (d){return d.Genre == "Strategy";}));
+        var dataAction = function (d){return d.Genre == "Action";};
+        var dataAdventure = function (d){return d.Genre == "Adventure";};
+        var dataFighting = function (d){return d.Genre == "Fighting";};
+        var dataMisc = function (d){return d.Genre == "Misc";};
+        var dataPlatform = function (d){return d.Genre == "Platform";};
+        var dataPuzzle = function (d){return d.Genre == "Puzzle";};
+        var dataRacing = function (d){return d.Genre == "Racing";};
+        var dataRolePlaying = function (d){return d.Genre == "Role-Playing";};
+        var dataShooter = function (d){return d.Genre == "Shooter";};
+        var dataSimulation = function (d){return d.Genre == "Simulation";};
+        var dataSports = function (d){return d.Genre == "Sports";};
+        var dataStrategy =function (d){return d.Genre == "Strategy";};
     
         var genreLine1 = d3.line()
             .x(function(d){return xScale(dataAction.Year_of_Release);})
