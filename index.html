@@ -48,8 +48,8 @@
         var yScale = d3.scaleLinear().domain([0,d3.max(data1, function(d){return d.Global_Sales + 10;})]).range([height,0]);
         
         var line = d3.line()
-            .x(function(d, i){return xScale(d.Year_of_Release);})
-            .y(function(d){ return yScale(d.Global_Sales));})
+            .x(function(d){return xScale(d.Year_of_Release);})
+            .y(function(d){return yScale(d.Global_Sales);});
 
 
         var svg = d3.select("svg")
@@ -74,7 +74,7 @@
         svg.append("path")
             .datum(dataset)
             .attr("class", "line")
-            .attr("d", line)
+            .attr("d", line);
         
         svg.selectAll(".dot")
             .data(dataset)
@@ -82,7 +82,7 @@
                 .attr("class", "dot")
                 .attr("cx", function(d,i){return xScale(d.Global_Sales)})
                 .attr("cy", function(d){return yScale(d.Year_of_Release)})
-                .attr("r", 5)
+                .attr("r", 5);
 
     </script>
 
