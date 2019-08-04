@@ -57,15 +57,7 @@ function getFilteredData(data, cat){
     return data.filter(function(d) { return d.Genre == cat})
 }
     
-var data = d3.csv('/data/salesByGenre.csv', function(d){
-        return {
-            Genre: d.Genre,
-            Year: +d.YearofRelease,
-            Sales: +d.Gross_Sales
-        };
-}).then(function(data){
-    console.log(data[0]);
-});
+const data = await d3.csv('/data/salesByGenre.csv');
     
     
 
@@ -73,7 +65,7 @@ var xScale = d3.scaleLinear().domain([1980,2020]).range([0,width])
 var yScale = d3.scaleLinear().domain([0,200]).range([height,0]);
 
     
-    function render(data, category){
+function render(data, category){
         d3.select("svg").html("")
         d3.select("svg").selectAll("rect")
             .data(getFilteredData(data, category))
