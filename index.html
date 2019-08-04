@@ -135,79 +135,92 @@
             .y(function(d){return yScale(dataStrategy.Global_Sales);});
     
     
-        svg.append("path")
-            .data(dataAction)
+        d3.select("svg")
+            .append("path")
+                .data(dataAction)
             .attr("class", "line")
             .style("stroke", "red")
             .attr("d", genreLine1);
     
-        svg.append("path")
-            .data(dataAdventure)
+        d3.select("svg")
+            .append("path")
+                .data(dataAdventure)
             .attr("class", "line")
             .style("stroke", "red")
             .attr("d", genreLine2);
     
-        svg.append("path")
-            .data(dataFighting)
+        d3.select("svg")
+            .append("path")
+                .data(dataFighting)
             .attr("class", "line")
             .style("stroke", "red")
             .attr("d", genreLine3);
     
-        svg.append("path")
-            .data(dataMisc)
+        d3.select("svg")
+            .append("path")
+                .data(dataMisc)
             .attr("class", "line")
             .style("stroke", "red")
             .attr("d", genreLine4);
     
-        svg.append("path")
-            .data(dataPlatform)
+        d3.select("svg")
+            .append("path")
+                .data(dataPlatform)
             .attr("class", "line")
             .style("stroke", "red")
             .attr("d", genreLine5);
     
-        svg.append("path")
-            .data(dataPuzzle)
+        d3.select("svg")
+            .append("path")
+                .data(dataPuzzle)
             .attr("class", "line")
             .style("stroke", "red")
             .attr("d", genreLine6);
     
-        svg.append("path")
-            .data(dataRacing)
+        d3.select("svg")
+            .append("path")
+                .data(dataRacing)
             .attr("class", "line")
             .style("stroke", "red")
             .attr("d", genreLine7);
 
-        svg.append("path")
-            .data(dataRolePlaying)
+        d3.select("svg")
+            .append("path")
+                .data(dataRolePlaying)
             .attr("class", "line")
             .style("stroke", "red")
             .attr("d", genreLine8);
     
-        svg.append("path")
-            .data(dataShooter)
+        d3.select("svg")
+            .append("path")
+                .data(dataShooter)
             .attr("class", "line")
             .style("stroke", "red")
             .attr("d", genreLine9);
     
-        svg.append("path")
-            .data(dataSimulation)
+        d3.select("svg")
+            .append("path")
+                .data(dataSimulation)
             .attr("class", "line")
             .style("stroke", "red")
             .attr("d", genreLine10);
     
-        svg.append("path")
-            .data(dataSports)
+        d3.select("svg")
+            .append("path")
+                .data(dataSports)
             .attr("class", "line")
             .style("stroke", "red")
             .attr("d", genreLine11);
     
-        svg.append("path")
-            .data(dataStrategy)
+        d3.select("svg")
+            .append("path")
+                .data(dataStrategy)
             .attr("class", "line")
             .style("stroke", "red")
             .attr("d", genreLine12);
     
-        svg.append("g")
+        d3.select("svg")
+            .append("g")
           .attr("transform", "translate(0," + height + ")")
           .call(d3.axisBottom(x));
 
