@@ -50,7 +50,7 @@
         
         var parseTime = d3.timeParse("%y");
 
-        d3.csv('/data/salesByGenre.csv'), function(error, data){
+        var data = d3.csv('/data/salesByGenre.csv'), function(error, data){
             if (error) throw error;
 
         };
@@ -62,6 +62,8 @@
         .append("g")
             .attr("tranform", "translate(" + margin.left +" ," + margin.top +")");
     
+        var x = d3.scaleTime().range([0, width]);
+        var y = d3.scaleLinear().range([height, 0]);
             
         x.domain(d3.extent(data, function(d) { return d.Year_of_Release;}));
         y.domain([0, d3.max(data, function(d){return Math.max(d.Global_Sales);})]);
