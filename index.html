@@ -48,71 +48,26 @@
     <svg width="500" height="500"></svg>
     
 <script>
-
-        
-        var margin = {top: 50, right: 50, bottom: 50, left: 50},
-        width = window.innerWidth - margin.left - margin.right,
-        height = window.innerHeight - margin.top - margin.bottom;
-        
-        var parseTime = d3.timeParse("%Y");
-
-
-
-
-        var svg = d3.select("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-            .attr("tranform", "translate(" + margin.left +" ," + margin.top +")");
     
-        var x = d3.scaleTime().range([0, width]);
-        var y = d3.scaleLinear().range([height, 0]);
-            
-        var xAxis = d3.axisBottom(x).ticks(40);
-    
-        var yAxis = d3.axisLeft(y).ticks(20);
-    
-    
-        var genreLine = d3.line()
-            .x(function(d){return xScale(data.Year_of_Release);})
-            .y(function(d){return yScale(data.Global_Sales);});
-    
-    
-        var svg = d3.select("svg")
-            .html("")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top +")");
-    
-        d3.csv('/data/salesByGenre.csv', function(error, data){
+var margin = {top: 50, right: 50, bottom: 50, left: 50},
+width = window.innerWidth - margin.left - margin.right,
+height = window.innerHeight - margin.top - margin.bottom;
 
-            
-            x.domain(d3.extent(data, function(d){return d.Year_of_Release;}));
-            y.domain([0, d3.max(data, function(d){return d.Global_Sales;})]);
-            
-            var dataNest = d3.nest()
-                .key(function(d) {return d.Genre})
-                .entries(data)
-            
-            dataNest.forEach(function(d){
-                svg.append("path")
-                    .attr("class", "line")
-                    .attr("d", genreLine(d.values));
-            });
-            
-            svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
+var data = d3.csv('/data/salesByGenre.csv');
+var xScale = d3.scaleLinear().domain([1980,2020]).range([0,width])
+var yScale = d3.scaleLinear().domain([0,200]).range([height,0]);
 
-            svg.append("g")
-                .attr("class", "y axis")
-                .call(yAxis);
-
-
-        });
-    </script>
+    d3.select("svg").selectAll("rect")
+        .data(data)
+    .enter().append("rect")
+    .attr("width",19)
+    .attr("x", function(d,i){return 20*i;})
+    .attr("height", 0)
+    .attr("y",400)
+    .transition().duration(3000).delay(1000)
+    .attr("height",function(d,i){return height-yScale(d.Global_Sales)})
+    .attr("x", function(d,i){return xScale(d.Year_of_Release)});
+</script>
 
 </body>
 </html>
