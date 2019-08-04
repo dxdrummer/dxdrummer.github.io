@@ -77,7 +77,7 @@
             .attr("d", line);
         
         svg.selectAll(".dot")
-            .data(dataset)
+            .data(data1)
             .enter().append("circle")
                 .attr("class", "dot")
                 .attr("cx", function(d,i){return xScale(d.Global_Sales)})
