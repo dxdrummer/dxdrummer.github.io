@@ -68,26 +68,22 @@
     
     
 
-        
-
-        var dataAdventure = function (d){return data.Genre == "Adventure";};
-        var dataFighting = function (d){return data.Genre == "Fighting";};
-        var dataMisc = function (d){return data.Genre == "Misc";};
-        var dataPlatform = function (d){return data.Genre == "Platform";};
-        var dataPuzzle = function (d){return data.Genre == "Puzzle";};
-        var dataRacing = function (d){return data.Genre == "Racing";};
-        var dataRolePlaying = function (d){return data.Genre == "Role-Playing";};
-        var dataShooter = function (d){return data.Genre == "Shooter";};
-        var dataSimulation = function (d){return data.Genre == "Simulation";};
-        var dataSports = function (d){return data.Genre == "Sports";};
-        var dataStrategy =function (d){return data.Genre == "Strategy";};
-    
-        var output = function(data, name){
-            return data.Genre == name;
+        var output = function(d, name){
+            return d.Genre == name;
             
         }
         
-        dataAction = output(data, "Action");
+        var dataAction = output(data, "Action");
+        var dataAdventure = output(data, "Adventure");
+        var dataMisc = output(data, "Misc");
+        var dataPlatform = output(data, "Platform");
+        var dataPuzzle = output(data, "Puzzle");
+        var dataRacing = output(data, "Racing")
+        var dataRolePlaying = output(data, "Role-Playing");
+        var dataShooter = output(data, "Shooter");
+        var dataSimulation = output(data, "Simulation");
+        var dataSports = output(data, "Sports");
+        var dataStrategy = output(data, "Strategy");
     
         var genreLine1 = d3.line()
             .x(function(d){return xScale(dataAction.Year_of_Release);})
@@ -137,6 +133,8 @@
         var genreLine12 = d3.line()
             .x(function(d){return xScale(dataStrategy.Year_of_Release);})
             .y(function(d){return yScale(dataStrategy.Global_Sales);});
+    
+    
         svg.append("path")
             .data(dataAction)
             .attr("class", "line")
