@@ -69,7 +69,7 @@
     
 
         
-        var dataAction = function (d){return data.Genre == "Action";};
+
         var dataAdventure = function (d){return data.Genre == "Adventure";};
         var dataFighting = function (d){return data.Genre == "Fighting";};
         var dataMisc = function (d){return data.Genre == "Misc";};
@@ -81,6 +81,13 @@
         var dataSimulation = function (d){return data.Genre == "Simulation";};
         var dataSports = function (d){return data.Genre == "Sports";};
         var dataStrategy =function (d){return data.Genre == "Strategy";};
+    
+        var output = function(data, name){
+            return data.Genre == name;
+            
+        }
+        
+        dataAction = output(data, "Action");
     
         var genreLine1 = d3.line()
             .x(function(d){return xScale(dataAction.Year_of_Release);})
