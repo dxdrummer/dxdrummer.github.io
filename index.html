@@ -29,6 +29,34 @@
         pointer-events: none;
     }
 
+    .d3-tip {
+      line-height: 1;
+      font-weight: bold;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      border-radius: 2px;
+    }
+
+    /* Creates a small triangle extender for the tooltip */
+    .d3-tip:after {
+      box-sizing: border-box;
+      display: inline;
+      font-size: 10px;
+      width: 100%;
+      line-height: 1;
+      color: rgba(0, 0, 0, 0.8);
+      content: "\25BC";
+      position: absolute;
+      text-align: center;
+    }
+
+
+    .d3-tip.n:after {
+      margin: -1px 0 0 0;
+      top: 100%;
+      left: 0;
+    }
 </style>
     
 
@@ -42,11 +70,13 @@
     <div class="buttons">
         <button onclick="page1()">Top 10 Game Sales</button>
         <button onclick="page2()">Game Sales by Console</button>
-    
+
+        <button onclick="page4()">Top Game Sold by Release Year</button>
     </div>
-    <div id="tooltip" opacity=0></div>
-    
+
+    <div id="tooltip" opacity=0 position="absolute"></div>
     <svg width="500" height="500"></svg>
+    
 
 <script>
     
@@ -54,63 +84,77 @@
         .html("")
         .append("h1")
         .text("Video Game Sales by Console in History")
+
+    d3.select("#header")
         .append("p")
-        .text("There have been a large number of consoles created and sold over time, and every console has their rabid fanbase that is ready to fight to the death over which console is 'best'. Today I will show you 3 datasets that will help make you make up your mind about which console reigns supreme.")
+            .text("There have been a large number of consoles created and sold over time, and every console has their rabid fanbase that is ready to fight to the death over which console is 'best'.")
+        .append("p")
+            .text("Today I will show you 3 visualizations that will help make you make up your mind about which console reigns supreme.")
+    
     
    page1 = function() {
  
-    d3.select("#header")
-        .html("")
-        .append("h1")
-        .text("Top 10 Video Game Sales (in millions) since 1980");
-    
-    var margin = {top: 100, right: 100, bottom: 100, left: 100},
-    width = window.innerWidth - margin.left - margin.right,
-    height = window.innerHeight - margin.top - margin.bottom;
-    
+        d3.select("#header")
+            .html("")
+            .append("h1")
+            .text("Top 10 Video Game Sales (in millions of units) since 1980");
 
-    
-    var top10 = [{"Name":"Wii Sports", "Sales":82.53},{"Name":"GTA V","Sales":56.57},{"Name":"Super Mario Bros","Sales":45.31},{"Name":"Tetris","Sales":35.84},{"Name":"Mario Kart Wii","Sales":35.52},{"Name":"Wii Sports Resort","Sales":32.77},{"Name":"Pokemon Red and Blue","Sales":31.37},{"Name":"CoD Black Ops","Sales":30.82},{"Name":"CoD MW3", "Sales":30.59},{"Name":"New Super Mario Bros", "Sales":29.8}]
+        var margin = {top: 100, right: 100, bottom: 100, left: 100},
+        width = window.innerWidth - margin.left - margin.right,
+        height = window.innerHeight - margin.top - margin.bottom;
+
         
-    var yScale = d3.scaleLinear().domain([0,100]).range([height,0]);
-    var xScale = d3.scaleOrdinal().domain(top10).range([0,width]);
 
-    var heighter = d3.scaleLinear().domain([0,100]).range([0,height]);
-    
-    var tooltip = d3.select("#tooltip")
-    
-    d3.select("svg")
-        .html("")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .selectAll("rect")
-        .data(top10)
-        .enter().append("rect")
-        .attr("transform", "translate("+margin.left+","+margin.top+")")
-        .attr("width", function(d){return width/20;})
-        .attr("x", function(d,i){return (width/20)*(i);})
-        .attr("height", function(d){return heighter(d.Sales);})
-        .attr("y", function(d){return yScale(d.Sales)+10;})
-        .on("mouseover", function(d,i){
-            tooltip.style("opacity", 1)
-                .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY) + "px")
-                .html("Name: "+d.Name+", Sales: "+d.Sales);
-        })
-        .on("mouseout", function(d,i){
-            tooltip.style("opacity",0);
-        });
+        var top10 = [{"Name":"Wii Sports", "Sales":82.53},{"Name":"GTA V","Sales":56.57},{"Name":"Super Mario Bros","Sales":45.31},{"Name":"Tetris","Sales":35.84},{"Name":"Mario Kart Wii","Sales":35.52},{"Name":"Wii Sports Resort","Sales":32.77},{"Name":"Pokemon Red and Blue","Sales":31.37},{"Name":"CoD Black Ops","Sales":30.82},{"Name":"CoD MW3", "Sales":30.59},{"Name":"New Super Mario Bros", "Sales":29.8}]
 
+        var yScale = d3.scaleLinear().domain([0,100]).range([height-margin.bottom,0]);
+        var xScale = d3.scaleOrdinal().domain(top10).range([0,width]);
 
-    
+        var heighter = d3.scaleLinear().domain([0,100]).range([0,height]);
+        
+        d3.select("svg").append("div")
+            .attr("id","tooltip")
+            .attr("opacity",0)
+       
+        var tooltip = d3.select("#tooltip")
+
         d3.select("svg")
-            .append("g").attr("transform", "translate("+margin.left+","+margin.top+")")
-            .call(d3.axisLeft(yScale));
-    
-    
+            .html("")
+            .attr("width", width)
+            .attr("height", height)
+            .selectAll("rect")
+            .data(top10)
+            .enter().append("rect")
+            .attr("transform", "translate("+margin.left+","+margin.top+")")
+            .attr("width", function(d){return width/20;})
+            .attr("x", function(d,i){return (width/20)*(i);})
+            .attr("height", function(d){return heighter(d.Sales);})
+            .attr("y", function(d){return yScale(d.Sales)+10;})
+            .on("mouseover", function(d,i){
+                tooltip.style("opacity", 1)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY) + "px")
+                    .html("Name: "+d.Name+", Sales: "+d.Sales);
+            })
+            .on("mouseout", function(d,i){
+                tooltip.style("opacity",0);
+            });
 
-        d3.select("#header").append("p")
-                .text("While nintendo consoles tend not to be in the front of the pack in terms of total sales, their games are extraordinarily popular. As we can see from the Top 10 titles in regards to sales listed here, most of them (except the CoD games and GTA) were exclusive titles on their platforms. The only game which came close to appraoching Wii Sports' sales record was GTA V which came out on multiple consoles (these numbers do not include PC sales).")
+
+
+            d3.select("svg")
+                .append("g").attr("transform", "translate("+margin.left+","+margin.top+")")
+                .call(d3.axisLeft(yScale));
+
+
+
+            d3.select("#header")
+                .append("p")
+                    .text("While nintendo consoles tend not to be in the front of the pack in terms of total sales, their games are extraordinarily popular.")
+                .append("p")
+                    .text("As we can see from the Top 10 titles in regards to sales listed here, most of them (except the CoD games and GTA) were exclusive titles on their platforms.")
+                .append("p")
+                    .text("The only game which came close to appraoching Wii Sports' sales record was GTA V which came out on multiple consoles.")
         }
    
    
@@ -119,7 +163,15 @@
     d3.select("#header")
         .html("")
         .append("h1")
-        .text("Total Game Sales By Console (in millions) since 1980");
+        .text("Total Game Sales By Console (in millions of units) since 1980");
+       
+    d3.select("#header")
+        .append("p")
+            .text("In our previous chart we saw that Nintendo had a stranglehold on the top 10 for games sold")
+        .append("p")
+            .text("However, while they have some games sell extremely well, they don't have the numbers that other consoles do in terms of volume (coming in with their first console at #4).")
+        .append("p")
+            .text("In fact, in regards to games sold per console, Sony is consistently at the top with the PS1, PS2, and PS3 all within the top 5 for video games sold")
     
     var margin = {top: 100, right: 100, bottom: 100, left: 100},
     width = window.innerWidth - margin.left - margin.right,
@@ -128,7 +180,7 @@
     var consoleGames = [{"Name": "PS2", "Sales": 1255.64}, {"Name": "X360", "Sales": 971.63}, {"Name": "PS3", "Sales": 939.43}, {"Name": "Wii", "Sales": 908.13}, {"Name": "DS", "Sales": 807.1}, {"Name": "PS", "Sales": 730.68}, {"Name": "GBA", "Sales": 318.5}, {"Name": "PS4", "Sales": 314.23}, {"Name": "PSP", "Sales": 294.3}, {"Name": "PC", "Sales": 260.3}, {"Name": "3DS", "Sales": 259.09}, {"Name": "XB", "Sales": 258.26}, {"Name": "GB", "Sales": 255.45}, {"Name": "NES", "Sales": 251.07}, {"Name": "N64", "Sales": 218.88}, {"Name": "SNES", "Sales": 200.05}, {"Name": "GC", "Sales": 199.36}, {"Name": "XOne", "Sales": 159.44}, {"Name": "2600", "Sales": 97.08}, {"Name": "WiiU", "Sales": 82.16}, {"Name": "PSV", "Sales": 54.12}, {"Name": "SAT", "Sales": 33.59}, {"Name": "GEN", "Sales": 30.78}, {"Name": "DC", "Sales": 15.97}, {"Name": "SCD", "Sales": 1.87}, {"Name": "NG", "Sales": 1.44}, {"Name": "WS", "Sales": 1.42}, {"Name": "TG16", "Sales": 0.16}, {"Name": "3DO", "Sales": 0.1}, {"Name": "GG", "Sales": 0.04}, {"Name": "PCFX", "Sales": 0.03}];
        
     
-    var yScale = d3.scaleLinear().domain([0,1300]).range([height,0]);
+    var yScale = d3.scaleLinear().domain([0,1300]).range([height-margin.bottom,0]);
     var xScale = d3.scaleOrdinal().domain(consoleGames).range([0,width]);
     var heighter = d3.scaleLinear().domain([0,1300]).range([0,height]);   
    
@@ -137,8 +189,8 @@
     
      d3.select("svg")
         .html("")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("width", width)
+        .attr("height", height)
         .selectAll("rect")
         .data(consoleGames)
         .enter().append("rect")
@@ -162,6 +214,72 @@
             .append("g").attr("transform", "translate("+margin.left+","+margin.top+")")
             .call(d3.axisLeft(yScale));
 
+        d3.select("#header").append("p")
+       
+   }
+   
+   
+   
+page4 = function() {
+       
+    d3.select("#header")
+        .html("")
+        .append("h1")
+        .text("Top Selling Games by Year");
+       
+    d3.select("#header")
+        .append("p")
+            .text("Here we look at the top selling games for each year for the range of 1980 - 2016")
+        .append("p")
+            .text("By looking at the data we can see that Nintendo consistently had the top selling game of the year starting from 1984 and going all the way to 1997 before being dethroned.")
+        .append("p")
+            .text("Even then they immediately got the top selling games again for the next 3 years after that")
+        
+        
+    var margin = {top: 100, right: 100, bottom: 100, left: 100},
+    width = window.innerWidth - margin.left - margin.right,
+    height = window.innerHeight - margin.top - margin.bottom;
+       
+    var consoleGames = [{"Name": "Asteroids", "Year": 1980, "Sales": 4.31}, {"Name": "Pitfall!", "Year": 1981, "Sales": 4.5}, {"Name": "Pac-Man", "Year": 1982, "Sales": 7.81}, {"Name": "Baseball", "Year": 1983, "Sales": 3.2}, {"Name": "Duck Hunt", "Year": 1984, "Sales": 28.31}, {"Name": "Super Mario Bros.", "Year": 1985, "Sales": 40.24}, {"Name": "The Legend of Zelda", "Year": 1986, "Sales": 6.51}, {"Name": "Zelda II: The Adventure of Link", "Year": 1987, "Sales": 4.38}, {"Name": "Super Mario Bros. 3", "Year": 1988, "Sales": 17.28}, {"Name": "Tetris", "Year": 1989, "Sales": 30.26}, {"Name": "Super Mario World", "Year": 1990, "Sales": 20.61}, {"Name": "The Legend of Zelda: A Link to the Past", "Year": 1991, "Sales": 4.61}, {"Name": "Super Mario Land 2: 6 Golden Coins", "Year": 1992, "Sales": 11.18}, {"Name": "Super Mario All-Stars", "Year": 1993, "Sales": 10.55}, {"Name": "Donkey Kong Country", "Year": 1994, "Sales": 9.3}, {"Name": "Donkey Kong Country 2: Diddy's Kong Quest", "Year": 1995, "Sales": 5.15}, {"Name": "Pokemon Red/Pokemon Blue", "Year": 1996, "Sales": 31.37}, {"Name": "Gran Turismo", "Year": 1997, "Sales": 10.95}, {"Name": "Pokemon Yellow: Special Pikachu Edition", "Year": 1998, "Sales": 14.64}, {"Name": "Pokemon Gold/Pokemon Silver", "Year": 1999, "Sales": 23.1}, {"Name": "Pokemon Crystal Version", "Year": 2000, "Sales": 6.39}, {"Name": "Gran Turismo 3: A-Spec", "Year": 2001, "Sales": 14.98}, {"Name": "Grand Theft Auto: Vice City", "Year": 2002, "Sales": 16.15}, {"Name": "Need for Speed Underground", "Year": 2003, "Sales": 10.46}, {"Name": "Grand Theft Auto: San Andreas", "Year": 2004, "Sales": 20.81}, {"Name": "Nintendogs", "Year": 2005, "Sales": 24.67}, {"Name": "Wii Sports", "Year": 2006, "Sales": 82.53}, {"Name": "Wii Fit", "Year": 2007, "Sales": 22.7}, {"Name": "Mario Kart Wii", "Year": 2008, "Sales": 35.52}, {"Name": "Wii Sports Resort", "Year": 2009, "Sales": 32.77}, {"Name": "Call of Duty: Black Ops", "Year": 2010, "Sales": 29.19}, {"Name": "Call of Duty: Modern Warfare 3", "Year": 2011, "Sales": 30.59}, {"Name": "Call of Duty: Black Ops II", "Year": 2012, "Sales": 29.4}, {"Name": "Grand Theft Auto V", "Year": 2013, "Sales": 37.31}, {"Name": "Call of Duty: Advanced Warfare", "Year": 2014, "Sales": 21.99}, {"Name": "Call of Duty: Black Ops 3", "Year": 2015, "Sales": 25.68}, {"Name": "FIFA 17", "Year": 2016, "Sales": 11.47}];
+       
+    
+    var yScale = d3.scaleLinear().domain([0,100]).range([height-margin.bottom,0]);
+    var xScale = d3.scaleLinear().domain([1980,2016]).range(0, width);
+    var heighter = d3.scaleLinear().domain([0,100]).range([0,height]);   
+   
+    var tooltip = d3.select("#tooltip")
+    
+     d3.select("svg")
+        .html("")
+        .attr("width", width)
+        .attr("height", height)
+        .selectAll("rect")
+        .data(consoleGames)
+        .enter().append("rect")
+        .attr("transform", "translate("+margin.left+","+margin.top+")")
+        .attr("width", function(d){return width/40;})
+        .attr("x", function(d,i){return (width/40)*(i);})
+        .attr("height", function(d){return heighter(d.Sales);})
+        .attr("y", function(d){return yScale(d.Sales)+10;})
+       
+        .on("mouseover", function(d,i){
+            tooltip.style("opacity", 1)
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY) + "px")
+                .html("Year: "+d.Year+", Name: "+d.Name+", Sales: "+d.Sales);
+        })
+        .on("mouseout", function(d,i){
+            tooltip.style("opacity",0);
+        });
+        
+       d3.select("svg")
+            .append("g").attr("transform", "translate("+margin.left+","+margin.top+")")
+            .call(d3.axisLeft(yScale));
+
+        d3.select("svg")
+            .append("g").attr("transform", "translate("+margin.left+","+margin.top+")")
+            .call(d3.axisBottom(xScale));
+        
         d3.select("#header").append("p")
        
    }
