@@ -70,13 +70,13 @@
     <div class="buttons">
         <button onclick="page1()">Top 10 Game Sales</button>
         <button onclick="page2()">Game Sales by Console</button>
-
+        <button onclick="page3()">Total sales by Genre</button>
         <button onclick="page4()">Top Game Sold by Release Year</button>
     </div>
 
     <div id="tooltip" opacity=0 position="absolute"></div>
     <svg width="500" height="500"></svg>
-    
+    <img id="101" src="http://cdn.collider.com/wp-content/uploads/2014/02/sega-genesis-does-nintendont.jpg">
 
 <script>
     
@@ -91,8 +91,10 @@
         .append("p")
             .text("Today I will show you 3 visualizations that will help make you make up your mind about which console reigns supreme.")
     
-    
+
    page1 = function() {
+       d3.select("img").html("")
+
  
         d3.select("#header")
             .html("")
@@ -159,7 +161,8 @@
    
    
    page2 = function() {
-       
+              d3.select("img").html("")
+
     d3.select("#header")
         .html("")
         .append("h1")
@@ -219,9 +222,86 @@
    }
    
    
+ page3 = function(){
+              d3.select("img").html("")
+
+    d3.select("#header")
+        .html("")
+        .append("h1")
+        .text("Sales by Genre (millions of units sold)");
+       
+
+    var margin = {top: 100, right: 100, bottom: 100, left: 100},
+    width = window.innerWidth - margin.left - margin.right,
+    height = window.innerHeight - margin.top - margin.bottom;
+       
+    var genreSales = [{"Name": "Action", "Sales": 1745.27}, {"Name": "Sports", "Sales": 1332}, {"Name": "Shooter", "Sales": 1052.94}, {"Name": "Role-Playing", "Sales": 934.4}, {"Name": "Platform", "Sales": 828.08}, {"Name": "Misc", "Sales": 803.18}, {"Name": "Racing", "Sales": 728.9}, {"Name": "Fighting", "Sales": 447.48}, {"Name": "Simulation", "Sales": 390.42}, {"Name": "Puzzle", "Sales": 243.02}, {"Name": "Adventure", "Sales": 237.69}, {"Name": "Strategy", "Sales": 174.5}];
+    
+    
+
+    
+    var radius = Math.min(width, height)/5;
+       
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
+       
+
+    var tooltip = d3.select("#tooltip")
+
+        
+    var svg = d3.select("svg")
+        .attr("width", width)
+        .attr("height", height)
+    
+        .append("g")
+            .attr("transform", "translate("+margin.left+","+margin.top+")");
+       
+       
+       var arc = d3.arc()
+        .innerRadius(0)
+        .outerRadius(radius);
+       
+    
+    var pie = d3.pie()
+        .value(function(d){return d.Sales;})
+        .sort(null);
+
+   d3.select("svg").html("")
+       
+    var path = d3.select('svg').selectAll('path')
+        .data(pie(genreSales))
+        .enter()
+        .append('path')
+        .attr('d', arc)
+        .attr('fill', function(d){return color(d.data.Name);})
+        .attr("transform", "translate("+(width/2)+","+(height/2)+")");
+        
+    
+        d3.select('svg').selectAll('path')
+            .data(genreSales)
+            .on("mouseover", function(d){
+            tooltip.style("opacity", 1)
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY) + "px")
+                .html("Name: "+d.Name+", Sales: "+d.Sales);
+        })
+        .on("mouseout", function(d,i){
+            tooltip.style("opacity",0);
+        });
+
+    d3.select("#header")
+        .append("p")
+            .text("Here we can see the number of copies of games sold (in millions) by Genre")
+        .append("p")
+            .text("Surprisingly, the Racing and Role-Playing genres, which had several games in the top of the charts, are ranked fairly low as genres")
+        .append("p")
+            .text("In fact, the most popular genres are 'Action' (admittedly kind of vague) and 'Sports'");
+        
+}  
+   
    
 page4 = function() {
-       
+              d3.select("img").html("")
+
     d3.select("#header")
         .html("")
         .append("h1")
@@ -276,9 +356,7 @@ page4 = function() {
             .append("g").attr("transform", "translate("+margin.left+","+margin.top+")")
             .call(d3.axisLeft(yScale));
 
-        d3.select("svg")
-            .append("g").attr("transform", "translate("+margin.left+","+margin.top+")")
-            .call(d3.axisBottom(xScale));
+
         
         d3.select("#header").append("p")
        
