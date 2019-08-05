@@ -59,17 +59,19 @@ d3.csv("./data/salesByGenre.csv").then(function(data){
     var yScale = d3.scaleLinear().domain([0,200]).range([height,0]);
 
     var canvas = d3.select("svg")
+        .selectAll("rect")
+        .data(data)
         .attr("width", width + margin.left + margin.top)
         .attr("height", height)
-    
-    canvas.selectAll("rect")
-        .data(data)
-        .enter()
-        .append("rect")
-    .attr("width", 20)
-    .attr("height", function(d){return d.GrossSales;})
-    .attr("x", function(d,i){return i*20;})
-    .attr("fill","blue");
+        .enter().append("rect")
+        .attr("width",19)
+        .attr("x", function(d,i){return 20*i;})
+        .attr("height", 20)
+        .attr("y", 400)
+        .transition().duration(3000).delay(1000)
+        .attr("height", function(d){return d.GrossSales})
+        .attr("y", function(d){return height - d.Grosssales});
+        
 
 });
     
