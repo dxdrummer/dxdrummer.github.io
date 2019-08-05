@@ -50,29 +50,28 @@
 <script>
     
 
+d3.csv("/data/salesByGenre.csv").then(function(data){
+    console.log(data);
+});
+
     
 var margin = {top: 50, right: 50, bottom: 50, left: 50},
 width = window.innerWidth - margin.left - margin.right,
 height = window.innerHeight - margin.top - margin.bottom;
 
 
-const data = d3.csv('/data/salesByGenre.csv');
-    
-function getFilteredData(data, cat){
-    return data.filter(function(d) { return d.Genre == cat})
-}
-    
-
 var xScale = d3.scaleLinear().domain([1980,2020]).range([0,width])
 var yScale = d3.scaleLinear().domain([0,200]).range([height,0]);
 
-
-    
+var filterData(data, cat){
+    return data.filter(function(d) { return d.Genre == cat;})
+}
+ 
 
 function render(data, category){
         d3.select("svg").html("")
         d3.select("svg").selectAll("rect")
-            .data(getFilteredData(data, category))
+            .data(data)
                 .enter().append("rect")
                 .attr("width",19)
                 .attr("x", function(d,i){return 20*i;})
@@ -83,11 +82,11 @@ function render(data, category){
                 .attr("x", function(d,i){return xScale(d.Year)});
         
     }
-    
+
+   
     function select(category){
         render(data, category);
     }
-    
 
 </script>
 
