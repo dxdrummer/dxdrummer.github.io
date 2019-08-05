@@ -50,59 +50,34 @@
 <script>
     
 
-d3.csv("/data/salesByGenre.csv").then(function(data){
-    console.log(data);
-});
-
+d3.csv("./data/salesByGenre.csv").then(function(data){
+    var margin = {top: 50, right: 50, bottom: 50, left: 50},
+    width = window.innerWidth - margin.left - margin.right,
+    height = window.innerHeight - margin.top - margin.bottom;
     
-var margin = {top: 50, right: 50, bottom: 50, left: 50},
-width = window.innerWidth - margin.left - margin.right,
-height = window.innerHeight - margin.top - margin.bottom;
+    var xScale = d3.scaleLinear().domain([1980,2020]).range([0,width])
+    var yScale = d3.scaleLinear().domain([0,200]).range([height,0]);
 
+    var canvas = d3.select("svg")
+        .attr("width", width + margin.left + margin.top)
+        .attr("height", height)
+    
+    canvas.selectAll("rect")
+        .data(data)
+        .enter()
+        .append("rect")
+    .attr("width", 20)
+    .attr("height", function(d){return d.GrossSales;})
+    .attr("x", function(d,i){return i*20;})
+    .attr("fill","blue");
 
-var xScale = d3.scaleLinear().domain([1980,2020]).range([0,width])
-var yScale = d3.scaleLinear().domain([0,200]).range([height,0]);
+});
+    
+    
 
-var filterData(data, cat){
-    return data.filter(function(d) { return d.Genre == cat;})
-}
- 
-
-function render(data, category){
-        d3.select("svg").html("")
-        d3.select("svg").selectAll("rect")
-            .data(data)
-                .enter().append("rect")
-                .attr("width",19)
-                .attr("x", function(d,i){return 20*i;})
-                .attr("height", 0)
-                .attr("y",400)
-                .transition().duration(3000).delay(1000)
-                .attr("height",function(d,i){return height-yScale(d.Sales)})
-                .attr("x", function(d,i){return xScale(d.Year)});
-        
-    }
-
-   
-    function select(category){
-        render(data, category);
-    }
 
 </script>
 
-    <div class="genres">
-        <button onclick="select('Action')">Action</button>
-        <button onclick="select('Adventure')">Adventure</button>
-        <button onclick="select('Fighting')">Fighting</button>
-        <button onclick="select('Misc')">Misc</button>
-        <button onclick="select('Platform')">Platform</button>
-        <button onclick="select('Puzzle')">Puzzle</button>
-        <button onclick="select('Racing')">Racing</button>
-        <button onclick="select('Role-Playing')">RolePlaying</button>
-        <button onclick="select('Shooter')">Shooter</button>
-        <button onclick="select('Simulation')">Simulation</button>
-        <button onclick="select('Sports')">Sports</button>
-        <button onclick="select('Strategy')">Strategy</button>
-    </div>
+
 </body>
 </html>
