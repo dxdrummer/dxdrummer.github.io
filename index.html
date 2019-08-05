@@ -40,7 +40,8 @@
 
     <div id="header"></div>
     <div class="buttons">
-        <button onclick="page1">Top 10 Game Sales</button>
+        <button onclick="page1()">Top 10 Game Sales</button>
+        <button onclick="page2()">Game Sales by Console</button>
     
     </div>
     <div id="tooltip" opacity=0></div>
@@ -48,10 +49,20 @@
     <svg width="500" height="500"></svg>
 
 <script>
+    
+    d3.select("#header")
+        .html("")
+        .append("h1")
+        .text("Video Game Sales by Console in History")
+        .append("p")
+        .text("There have been a large number of consoles created and sold over time, and every console has their rabid fanbase that is ready to fight to the death over which console is 'best'. Today I will show you 3 datasets that will help make you make up your mind about which console reigns supreme.")
+    
    page1 = function() {
  
-    d3.select("#header").append("h1")
-        .text("Top 10 Video Game Sales (totals) since 1980");
+    d3.select("#header")
+        .html("")
+        .append("h1")
+        .text("Top 10 Video Game Sales (in millions) since 1980");
     
     var margin = {top: 100, right: 100, bottom: 100, left: 100},
     width = window.innerWidth - margin.left - margin.right,
@@ -101,6 +112,59 @@
         d3.select("#header").append("p")
                 .text("While nintendo consoles tend not to be in the front of the pack in terms of total sales, their games are extraordinarily popular. As we can see from the Top 10 titles in regards to sales listed here, most of them (except the CoD games and GTA) were exclusive titles on their platforms. The only game which came close to appraoching Wii Sports' sales record was GTA V which came out on multiple consoles (these numbers do not include PC sales).")
         }
+   
+   
+   page2 = function() {
+       
+    d3.select("#header")
+        .html("")
+        .append("h1")
+        .text("Total Game Sales By Console (in millions) since 1980");
+    
+    var margin = {top: 100, right: 100, bottom: 100, left: 100},
+    width = window.innerWidth - margin.left - margin.right,
+    height = window.innerHeight - margin.top - margin.bottom;
+       
+    var consoleGames = [{"Name": "PS2", "Sales": 1255.64}, {"Name": "X360", "Sales": 971.63}, {"Name": "PS3", "Sales": 939.43}, {"Name": "Wii", "Sales": 908.13}, {"Name": "DS", "Sales": 807.1}, {"Name": "PS", "Sales": 730.68}, {"Name": "GBA", "Sales": 318.5}, {"Name": "PS4", "Sales": 314.23}, {"Name": "PSP", "Sales": 294.3}, {"Name": "PC", "Sales": 260.3}, {"Name": "3DS", "Sales": 259.09}, {"Name": "XB", "Sales": 258.26}, {"Name": "GB", "Sales": 255.45}, {"Name": "NES", "Sales": 251.07}, {"Name": "N64", "Sales": 218.88}, {"Name": "SNES", "Sales": 200.05}, {"Name": "GC", "Sales": 199.36}, {"Name": "XOne", "Sales": 159.44}, {"Name": "2600", "Sales": 97.08}, {"Name": "WiiU", "Sales": 82.16}, {"Name": "PSV", "Sales": 54.12}, {"Name": "SAT", "Sales": 33.59}, {"Name": "GEN", "Sales": 30.78}, {"Name": "DC", "Sales": 15.97}, {"Name": "SCD", "Sales": 1.87}, {"Name": "NG", "Sales": 1.44}, {"Name": "WS", "Sales": 1.42}, {"Name": "TG16", "Sales": 0.16}, {"Name": "3DO", "Sales": 0.1}, {"Name": "GG", "Sales": 0.04}, {"Name": "PCFX", "Sales": 0.03}];
+       
+    
+    var yScale = d3.scaleLinear().domain([0,1300]).range([height,0]);
+    var xScale = d3.scaleOrdinal().domain(consoleGames).range([0,width]);
+    var heighter = d3.scaleLinear().domain([0,1300]).range([0,height]);   
+   
+           
+    var tooltip = d3.select("#tooltip")
+    
+     d3.select("svg")
+        .html("")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .selectAll("rect")
+        .data(consoleGames)
+        .enter().append("rect")
+        .attr("transform", "translate("+margin.left+","+margin.top+")")
+        .attr("width", function(d){return width/60;})
+        .attr("x", function(d,i){return (width/60)*(i);})
+        .attr("height", function(d){return heighter(d.Sales);})
+        .attr("y", function(d){return yScale(d.Sales)+10;})
+       
+        .on("mouseover", function(d,i){
+            tooltip.style("opacity", 1)
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY) + "px")
+                .html("Name: "+d.Name+", Sales: "+d.Sales);
+        })
+        .on("mouseout", function(d,i){
+            tooltip.style("opacity",0);
+        });
+        
+       d3.select("svg")
+            .append("g").attr("transform", "translate("+margin.left+","+margin.top+")")
+            .call(d3.axisLeft(yScale));
+
+        d3.select("#header").append("p")
+       
+   }
 </script>
 </body>
 </html>
